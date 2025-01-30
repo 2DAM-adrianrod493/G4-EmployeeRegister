@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "G4-EmployeeRegister/1.0.0": {
+        "runtime": {
+          "G4-EmployeeRegister.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "G4-EmployeeRegister/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

@@ -16,8 +16,8 @@ namespace G4_EmployeeRegister.Services
         {
             _usuarioList = new ObservableCollection<UsuarioModel>();
 
-            _usuarioList.Add(new UsuarioModel(1, "Adrián", "Rodríguez Rodríguez", "adrianrodry55@gmail.com", "rodry", "adri555", "adri.jpg", "Empleado", "Informática"));
-            _usuarioList.Add(new UsuarioModel(2, "Irene Naya", "Sánchez Bolívar", "laura.gomez@mail.com", "laurag", "naya555", "naya.jpg", "Empleado", "Logística"));
+            _usuarioList.Add(new UsuarioModel(1, "Adrián", "Rodríguez Rodríguez", "adrianrodry55@gmail.com", "rodry", "adri555", "adri.jpg", "Empleado","Informática"));
+            _usuarioList.Add(new UsuarioModel(2, "Irene Naya", "Sánchez Bolívar", "laura.gomez@mail.com", "laurag", "naya555", "naya.jpg", "Empleado", "Informática"));
 
             return _usuarioList;
         }

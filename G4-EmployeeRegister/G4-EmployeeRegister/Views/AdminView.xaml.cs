@@ -8,6 +8,7 @@ namespace G4_EmployeeRegister.Views
         public AdminView()
         {
             InitializeComponent();
+            this.DataContext = new ViewModels.AdminViewModel();
         }
 
         private void BotonSalir_Click(object sender, RoutedEventArgs e)
