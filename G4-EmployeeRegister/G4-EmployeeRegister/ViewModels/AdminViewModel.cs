@@ -20,8 +20,6 @@ namespace G4_EmployeeRegister.ViewModels
         // Servicios
         private readonly Services.UsuarioService _usuariosService;
 
-        
-
         // ObservableCollection de usuarios
         public ObservableCollection<UsuarioModel> Usuarios { get; set; }
 
@@ -145,13 +143,6 @@ namespace G4_EmployeeRegister.ViewModels
         }
         #endregion
 
-        #region Cargar Usuarios
-        // CARGAMOS USUARIOS
-        private void LoadUsers()
-        {
-            Usuarios = _usuariosService.GetAllUsuarios();
-        }
-
         #region COMANDOS
         // MANEJO DE USUARIOS
         public RelayCommand AddUser { get; }
@@ -159,21 +150,29 @@ namespace G4_EmployeeRegister.ViewModels
         public RelayCommand DeleteUser { get; }
         public RelayCommand MostrarFichajes { get; }
         public RelayCommand SeleccionarImagenCommand { get; }
-        public RelayCommand VolverALogin {  get; }
+        public RelayCommand VolverALogin { get; }
+        public RelayCommand DownloadCommand { get; }
         #endregion
+
+        #region Cargar Usuarios
+        // CARGAMOS USUARIOS
+        private void LoadUsers()
+        {
+            Usuarios = _usuariosService.GetAllUsuarios();
+        }
+
+        
 
         public AdminViewModel(UsuarioModel usuario)
         {
             // Inicializamos los valores del usuario actual
             NombreCompleto ="Usuario Connectado: "+  usuario.Nombre + " " + usuario.Apellidos;
+            Foto = usuario.Foto;
             _usuariosService = new UsuarioService();
             Usuarios = new ObservableCollection<UsuarioModel>();
 
             // Acciones Comandos
-            AddUser = new RelayCommand(
-                _ => AddUsuario(),
-                _ => PuedeAniadir()
-            );
+            AddUser = new RelayCommand(_ => AddUsuario(),_ => PuedeAniadir());
 
             EditUser = new RelayCommand(_ => EditUsuario(), _ => true);
 
@@ -181,9 +180,10 @@ namespace G4_EmployeeRegister.ViewModels
             MostrarFichajes = new RelayCommand(paramUsuario => VerLosFichajes(paramUsuario), _ => true);
             SeleccionarImagenCommand = new RelayCommand(_ => CargaImagen(), _ => true);
             VolverALogin = new RelayCommand(_=> VolverLoginVentana(),_=> true);
-          
-            // Cargamos los usuarios
+            DownloadCommand = new RelayCommand(_ => DownloadReport(UsuarioSelecionado), _ => true);
             
+            // Cargamos los usuarios
+
             LoadUsers();
         }
 
@@ -207,11 +207,24 @@ namespace G4_EmployeeRegister.ViewModels
             loginView.Show();
             Application.Current.Windows[0].Close();
         }
-        
+
 
         #endregion
 
-
+        #region DESCARGAR DATOS
+        // DESCARGAR DATOS
+        public void DownloadReport(UsuarioModel usuarioSelecionado)
+        {
+            if (UsuarioSelecionado == null)
+            {
+                _usuariosService.DownloadReportUsuarios();
+            }
+            else
+            {
+                _usuariosService.DownloadReportUsuarioUnico(usuarioSelecionado);
+            }
+        }
+        #endregion
         #region Cargar Imagen
         // Cargar la imagen seleccionada por el usuario
         public void CargaImagen()
@@ -316,9 +329,7 @@ namespace G4_EmployeeRegister.ViewModels
 
                 // Refrescamos la lista de usuarios en la UI
                 LoadUsers();
-
-                MessageBox.Show("Usuario actualizado correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
-                LoadUsers();
+                
             }
             catch (Exception ex)
             {

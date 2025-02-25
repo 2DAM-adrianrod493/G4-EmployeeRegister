@@ -198,3 +198,11 @@ C:\Users\binin\OneDrive\Documents\2DAM\DEINT\G4-EmployeeRegister\G4-EmployeeRegi
 C:\Users\binin\OneDrive\Documents\2DAM\DEINT\G4-EmployeeRegister\G4-EmployeeRegister\G4-EmployeeRegister\obj\Debug\net8.0-windows\G4-EmployeeRegister.genruntimeconfig.cache
 C:\Users\binin\OneDrive\Documents\2DAM\DEINT\G4-EmployeeRegister\G4-EmployeeRegister\G4-EmployeeRegister\obj\Debug\net8.0-windows\ref\G4-EmployeeRegister.dll
 C:\Users\binin\OneDrive\Documents\2DAM\DEINT\G4-EmployeeRegister\G4-EmployeeRegister\G4-EmployeeRegister\obj\Debug\net8.0-windows\GeneratedInternalTypeHelper.g.cs
+C:\Users\binin\OneDrive\Documents\2DAM\DEINT\G4-EmployeeRegister\G4-EmployeeRegister\G4-EmployeeRegister\bin\Debug\net8.0-windows\ClosedXML.dll
+C:\Users\binin\OneDrive\Documents\2DAM\DEINT\G4-EmployeeRegister\G4-EmployeeRegister\G4-EmployeeRegister\bin\Debug\net8.0-windows\ClosedXML.Parser.dll
+C:\Users\binin\OneDrive\Documents\2DAM\DEINT\G4-EmployeeRegister\G4-EmployeeRegister\G4-EmployeeRegister\bin\Debug\net8.0-windows\DocumentFormat.OpenXml.dll
+C:\Users\binin\OneDrive\Documents\2DAM\DEINT\G4-EmployeeRegister\G4-EmployeeRegister\G4-EmployeeRegister\bin\Debug\net8.0-windows\DocumentFormat.OpenXml.Framework.dll
+C:\Users\binin\OneDrive\Documents\2DAM\DEINT\G4-EmployeeRegister\G4-EmployeeRegister\G4-EmployeeRegister\bin\Debug\net8.0-windows\ExcelNumberFormat.dll
+C:\Users\binin\OneDrive\Documents\2DAM\DEINT\G4-EmployeeRegister\G4-EmployeeRegister\G4-EmployeeRegister\bin\Debug\net8.0-windows\RBush.dll
+C:\Users\binin\OneDrive\Documents\2DAM\DEINT\G4-EmployeeRegister\G4-EmployeeRegister\G4-EmployeeRegister\bin\Debug\net8.0-windows\SixLabors.Fonts.dll
+C:\Users\binin\OneDrive\Documents\2DAM\DEINT\G4-EmployeeRegister\G4-EmployeeRegister\G4-EmployeeRegister\bin\Debug\net8.0-windows\System.IO.Packaging.dll

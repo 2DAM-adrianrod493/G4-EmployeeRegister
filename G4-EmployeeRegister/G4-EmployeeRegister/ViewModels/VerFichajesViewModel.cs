@@ -25,10 +25,21 @@ namespace G4_EmployeeRegister.ViewModels
             }
         }
         public string NombreCompleto { get => _usuario.Nombre + " " + _usuario.Apellidos; }
+        public string texto;
 
+        public string Texto
+        {
+            get => texto;
+            set
+            {
+                texto = value;
+                OnPropertyChanged(nameof(Texto));
+            }
+        }
 
         public VerFichajesViewModel(UsuarioModel usuario)
         {
+            Texto = "Historial de fichaje";
             _usuario = usuario;
             _fichajeService = new FichajeService();
 

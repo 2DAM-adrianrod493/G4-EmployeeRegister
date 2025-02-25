@@ -23,6 +23,9 @@ namespace G4_EmployeeRegister.UserControls
         public UsersControlador()
         {
             InitializeComponent();
+            this.DataContext = this;
         }
+        
+        public string Header { get; set; }
     }
 }

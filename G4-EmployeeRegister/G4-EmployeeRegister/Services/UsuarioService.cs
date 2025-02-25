@@ -1,13 +1,16 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using ClosedXML.Excel;
 using G4_EmployeeRegister.Models;
 using Microsoft.Data.SqlClient;
+using Microsoft.Win32;
 
 namespace G4_EmployeeRegister.Services
 {
@@ -82,6 +85,121 @@ namespace G4_EmployeeRegister.Services
             }
         }
 
+        #region MÉTODOS DE DESCARGAR DATOS
+        // DESCARGAR DATOS USUARIOS
+        public void DownloadReportUsuarios()
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+
+            saveFileDialog.Title = "Guardar Reporte";
+            saveFileDialog.Filter = "Archivos Excel (*.xlsx)|*.xlsx";
+            saveFileDialog.FileName = "Reporte_Usuarios.xlsx";
+
+            if (saveFileDialog.ShowDialog() == true) // Si el usuario selecciona una ubicación
+            {
+                string rutaArchivo = saveFileDialog.FileName;
+                using (SqlConnection conexion = new SqlConnection(connectionString))
+                {
+                    conexion.Open();
+                    string query = @"SELECT IdUsuario, Nombre, Apellidos, Email, Username, 
+                            Contrasenia, Rol,
+                            Departamento FROM Usuarios Where Rol='Usuario';
+                            ";
+
+                    using (SqlCommand cmd = new SqlCommand(query, conexion))
+                    {
+                        using (SqlDataAdapter adapter = new
+                        SqlDataAdapter(cmd))
+                        {
+                            DataTable dt = new DataTable();
+                            adapter.Fill(dt);
+
+                            using (XLWorkbook wb = new XLWorkbook())
+                            {
+                                var hoja = wb.Worksheets.Add(dt,
+                                "Usuarios");
+
+                                hoja.Columns().AdjustToContents();
+
+                                hoja.Row(1).Style.Font.Bold = true;
+                                var lastcolumn =
+                                hoja.LastColumnUsed().ColumnNumber();
+                                var lastrow =
+                                hoja.LastRowUsed().RowNumber();
+
+                                hoja.Range(1, 1, 1,
+                                lastcolumn).Style.Fill.SetBackgroundColor(XLColor.BabyBlue);
+                                hoja.Range(2, 1, lastrow,
+                                lastcolumn).Style.Fill.SetBackgroundColor(XLColor.WhiteSmoke);
+                                wb.SaveAs(rutaArchivo);
+                            }
+                        }
+                    }
+                }
+                MessageBox.Show($"Report InfoUsuarios guardado en:\n{rutaArchivo}",
+                "Generación Correcta", MessageBoxButton.OK,
+                MessageBoxImage.Information);
+            }
+        }
+
+        // DESCARGAR DATOS USUARIOS
+        public void DownloadReportUsuarioUnico(UsuarioModel usuario)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+
+            saveFileDialog.Title = "Guardar Reporte";
+            saveFileDialog.Filter = "Archivos Excel (*.xlsx)|*.xlsx";
+            saveFileDialog.FileName = "Reporte_" + usuario.Nombre + "_" + usuario.Apellidos + "_" + usuario.IdUsuario + ".xlsx";
+
+            if (saveFileDialog.ShowDialog() == true) // Si el usuario selecciona una ubicación
+            {
+                string rutaArchivo = saveFileDialog.FileName;
+                using (SqlConnection conexion = new SqlConnection(connectionString))
+                {
+                    conexion.Open();
+                    string query = @"SELECT IdUsuario, Nombre, Apellidos, Email, Username, 
+                                    Contrasenia, Rol, Departamento
+                                    FROM Usuarios u
+                                    Where u.IdUsuario = @IdUsuario;";
+
+                    using (SqlCommand cmd = new SqlCommand(query, conexion))
+                    {
+                        cmd.Parameters.AddWithValue("@IdUsuario", usuario.IdUsuario);
+
+                        using (SqlDataAdapter adapter = new
+                        SqlDataAdapter(cmd))
+                        {
+                            DataTable dt = new DataTable();
+                            adapter.Fill(dt);
+
+                            using (XLWorkbook wb = new XLWorkbook())
+                            {
+                                var hoja = wb.Worksheets.Add(dt,
+                                "Usuarios");
+
+                                hoja.Columns().AdjustToContents();
+
+                                hoja.Row(1).Style.Font.Bold = true;
+                                var lastcolumn =
+                                hoja.LastColumnUsed().ColumnNumber();
+                                var lastrow =
+                                hoja.LastRowUsed().RowNumber();
+
+                                hoja.Range(1, 1, 1,
+                                lastcolumn).Style.Fill.SetBackgroundColor(XLColor.BabyBlue);
+                                hoja.Range(2, 1, lastrow,
+                                lastcolumn).Style.Fill.SetBackgroundColor(XLColor.WhiteSmoke);
+                                wb.SaveAs(rutaArchivo);
+                            }
+                        }
+                    }
+                }
+                MessageBox.Show($"Report InfoUsuario guardado en:\n{rutaArchivo}",
+                "Generación Correcta", MessageBoxButton.OK,
+                MessageBoxImage.Information);
+            }
+        }
+        #endregion
 
         // AGREGAR USUARIO
         public void AddUsuario(UsuarioModel usuarioModel)

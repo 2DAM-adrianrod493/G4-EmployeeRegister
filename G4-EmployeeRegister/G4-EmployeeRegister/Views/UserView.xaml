@@ -62,29 +62,42 @@
 
 
         <!-- Botones -->
-        <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="6*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="6*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+<Grid Grid.Row="2">
+    <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="7*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="5*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="7*"/>
+        <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
 
-            <Button Content="Iniciar Jornada"
-                    Style="{StaticResource EstilosButton}"
-                    Grid.Column="1"
-                    Command="{Binding IniciarJornadaCommand}"
-                    Width="Auto"
-                    Margin="15,0,10,0"/>
+    <Button Content="Iniciar Jornada"
+            Style="{StaticResource EstilosButton}"
+            Grid.Column="1"
+            Command="{Binding IniciarJornadaCommand}"
+            Width="Auto"
+            Margin="15,0,10,0"/>
 
-            <Button Content="Finalizar Jornada"
-                    Style="{StaticResource EstilosButton}"
-                    Grid.Column="3"
-                    Command="{Binding FinalizarJornadaCommand}"
-                    Width="Auto"
-                    Margin="10,0,15,0"/>
-        </Grid>
+
+    <Button Content="Descargar Historial"
+            Style="{StaticResource EstilosButton}"
+            Grid.Column="3"
+            Command="{Binding DownloadCommandHistorial}"
+            Width="Auto"
+            Background="White"
+            Foreground="#44376C"
+            Margin="10,0,15,0"/>
+
+    <Button Content="Finalizar Jornada"
+            Style="{StaticResource EstilosButton}"
+            Grid.Column="5"
+            Command="{Binding FinalizarJornadaCommand}"
+            Width="Auto"
+            Margin="10,0,15,0"/>
+
+</Grid>
 
         <!-- Lista Fichajes -->
         <StackPanel Grid.Row="3" Margin="10">

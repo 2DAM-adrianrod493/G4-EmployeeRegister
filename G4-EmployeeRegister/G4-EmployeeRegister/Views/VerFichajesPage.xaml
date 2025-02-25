@@ -29,7 +29,7 @@
             </Grid.ColumnDefinitions>
 
             <!-- UserControl -->
-            <uc:UsersControlador Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" />
+            <uc:UsersControlador Header="Historial" VerticalAlignment="Center" />
 
             <!-- Salir -->
             <Button x:Name="BotonSalir"

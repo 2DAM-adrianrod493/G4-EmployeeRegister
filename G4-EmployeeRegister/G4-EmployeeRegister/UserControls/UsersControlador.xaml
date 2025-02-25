@@ -21,11 +21,8 @@
                HorizontalAlignment="Center"
                Margin="20,0,10,0"/>
 
-        <TextBlock Grid.Column="1" 
-                   Text="Bienvenido a Employee Register" 
-                   FontSize="28" 
-                   FontWeight="Bold" 
-                   Foreground="White" 
+        <TextBlock Grid.Column="1" Style="{StaticResource EstiloTextoTitulo}" 
+                   Text="{Binding Header}" 
                    VerticalAlignment="Center" 
                    HorizontalAlignment="Center"/>
     </Grid>
