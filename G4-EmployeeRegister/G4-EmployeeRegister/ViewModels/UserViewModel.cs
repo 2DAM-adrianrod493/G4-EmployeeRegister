@@ -14,14 +14,14 @@ namespace G4_EmployeeRegister.ViewModels
     {
         private readonly FichajeService _fichajeService;
         private UsuarioModel _usuario;
-
         public ObservableCollection<FichajeModel> Fichajes { get; set; }
 
+        #region COMANDOS
         public RelayCommand IniciarJornadaCommand { get; set; }
         public RelayCommand FinalizarJornadaCommand { get; set; }
         public RelayCommand VolverALogin { get; }
         public RelayCommand DownloadCommandHistorial { get; }
-
+        #endregion
 
         #region CONSTRUCTOR
         public UserViewModel(UsuarioModel usuario)
@@ -110,6 +110,14 @@ namespace G4_EmployeeRegister.ViewModels
         }
 
 
+        public void VolverLoginVentana()
+        {
+            LoginView loginView = new LoginView();
+            loginView.Show();
+            Application.Current.Windows[0].Close();
+        }
+        #endregion
+
         #region DESCARGAR DATOS
         // DESCARGAR DATOS
         public void DownloadReportFichajesHistorial()
@@ -122,14 +130,6 @@ namespace G4_EmployeeRegister.ViewModels
             //{
             //    _usuariosService.DownloadReportUsuario();
             //}
-        }
-        #endregion
-
-        public void VolverLoginVentana()
-        {
-            LoginView loginView = new LoginView();
-            loginView.Show();
-            Application.Current.Windows[0].Close();
         }
         #endregion
 

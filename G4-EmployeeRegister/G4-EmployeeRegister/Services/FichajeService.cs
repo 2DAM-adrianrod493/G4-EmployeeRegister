@@ -16,6 +16,8 @@ namespace G4_EmployeeRegister.Services
     {
         // CREAMOS UNA LISTA PRIVADA
         private ObservableCollection<FichajeModel> _fichajeList { get; set; }
+
+        // CADENA DE CONEXIÓN A LA BD
         private string connectionString = ConfigurationManager.ConnectionStrings["Conexion_App"].ConnectionString;
 
         // OBTENEMOS LOS FICHAJES

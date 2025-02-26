@@ -55,10 +55,11 @@ namespace G4_EmployeeRegister.ViewModels
 
             Fichajes = new ObservableCollection<FichajeModel>(_fichajeService.GetAllFichajes(_usuario));
         }
-        #region CommandoVolverAtras
 
+        #region COMANDOS
         public RelayCommand VolverAtrasCommand { get; }
         #endregion
+
         public void VolverAtras()
         {
             AdminView adminView = new AdminView(_usuario);
@@ -67,7 +68,7 @@ namespace G4_EmployeeRegister.ViewModels
 
         }
 
-        #region Página de Edición
+        #region PÁGINA EDICIÓN
         private Page _paginaFichaje;
         public Page PaginaAdmin
         {
@@ -79,7 +80,6 @@ namespace G4_EmployeeRegister.ViewModels
             }
         }
         #endregion
-
 
         #region EVENTO DE NOTIFICACIÓN
         public event PropertyChangedEventHandler PropertyChanged;

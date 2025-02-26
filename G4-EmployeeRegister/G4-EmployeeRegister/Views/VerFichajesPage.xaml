@@ -29,7 +29,7 @@
             </Grid.ColumnDefinitions>
 
             <!-- UserControl -->
-            <uc:UsersControlador Header="Historial" VerticalAlignment="Center" />
+            <uc:UsersControlador Header="Historial" VerticalAlignment="Center" HorizontalAlignment="Center" />
 
             <!-- Salir -->
             <Button x:Name="BotonSalir"
@@ -38,7 +38,7 @@
                     Background="Transparent"
                     BorderThickness="0"
                     Command="{Binding VolverAtrasCommand}">
-                <Image Source="/Resources/Iconos/salir.png"
+                <Image Source="/Resources/Iconos/atras.png"
                        Width="38"
                        Style="{StaticResource EstiloImagen}"/>
             </Button>

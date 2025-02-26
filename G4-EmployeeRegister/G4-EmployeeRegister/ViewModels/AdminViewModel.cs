@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
 namespace G4_EmployeeRegister.ViewModels
@@ -19,6 +20,8 @@ namespace G4_EmployeeRegister.ViewModels
     {
         // Servicios
         private readonly Services.UsuarioService _usuariosService;
+
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         // ObservableCollection de usuarios
         public ObservableCollection<UsuarioModel> Usuarios { get; set; }
@@ -34,88 +37,103 @@ namespace G4_EmployeeRegister.ViewModels
         private string? _departamento;
         byte[] usuarioImg;
         private bool imagenSubida = false;
-       public string NombreCompleto
-    {
-        get => _nombreCompleto;
-        set
-        {
-            _nombreCompleto = value;
-            OnPropertyChanged(nameof(NombreCompleto));
-        }
-    }
 
-    public string Nombre
-    {
-        get => _nombre;
-        set
+        public string NombreCompleto
         {
-            _nombre = value;
-            OnPropertyChanged(nameof(Nombre));
+            get => _nombreCompleto;
+            set
+            {
+                _nombreCompleto = value;
+                OnPropertyChanged(nameof(NombreCompleto));
+            }
         }
-    }
 
-    public string Apellidos
-    {
-        get => _apellidos;
-        set
+        public string Nombre
         {
-            _apellidos = value;
-            OnPropertyChanged(nameof(Apellidos));
+            get => _nombre;
+            set
+            {
+                _nombre = value;
+                OnPropertyChanged(nameof(Nombre));
+            }
         }
-    }
 
-    public string Email
-    {
-        get => _email;
-        set
+        public string Apellidos
         {
-            _email = value;
-            OnPropertyChanged(nameof(Email));
+            get => _apellidos;
+            set
+            {
+                _apellidos = value;
+                OnPropertyChanged(nameof(Apellidos));
+            }
         }
-    }
 
-    public string Username
-    {
-        get => _username;
-        set
+        public string Email
         {
-            _username = value;
-            OnPropertyChanged(nameof(Username));
+            get => _email;
+            set
+            {
+                _email = value;
+                OnPropertyChanged(nameof(Email));
+            }
         }
-    }
 
-    public BitmapImage Foto
-    {
-        get => _foto;
-        set
+        public string Username
         {
-            _foto = value;
-            OnPropertyChanged(nameof(Foto));
+            get => _username;
+            set
+            {
+                _username = value;
+                OnPropertyChanged(nameof(Username));
+            }
         }
-    }
 
-    public string Rol
-    {
-        get => _rol;
-        set
+        public BitmapImage Foto
         {
-            _rol = value;
-            OnPropertyChanged(nameof(Rol));
+            get => _foto;
+            set
+            {
+                _foto = value;
+                OnPropertyChanged(nameof(Foto));
+            }
         }
-    }
 
-    public string? Departamento
-    {
-        get => _departamento;
-        set
+        public string Rol
         {
-            _departamento = value;
-            OnPropertyChanged(nameof(Departamento));
+            get => _rol;
+            set
+            {
+                _rol = value;
+                OnPropertyChanged(nameof(Rol));
+            }
         }
-    }
+
+        public string? Departamento
+        {
+            get => _departamento;
+            set
+            {
+                _departamento = value;
+                OnPropertyChanged(nameof(Departamento));
+            }
+        }
         #endregion
 
-        #region Propiedad Usuario seleccionado
+        #region PROPIEDAD BUSCADOR
+        private string _buscador;
+        public string Buscador
+        {
+            get => _buscador;
+            set
+            {
+                _buscador = value;
+                OnPropertyChanged(nameof(Buscador));
+                CollectionViewSource.GetDefaultView(Usuarios)?.Refresh();
+            }
+        }
+        #endregion
+
+        #region PROPIEDAD USUARIO SELECCIONADO
         private UsuarioModel _usuarioSeleccionado;
         public UsuarioModel UsuarioSelecionado
         {
@@ -154,19 +172,18 @@ namespace G4_EmployeeRegister.ViewModels
         public RelayCommand DownloadCommand { get; }
         #endregion
 
-        #region Cargar Usuarios
+        #region CARGAR USUARIOS
         // CARGAMOS USUARIOS
         private void LoadUsers()
         {
             Usuarios = _usuariosService.GetAllUsuarios();
         }
 
-        
 
         public AdminViewModel(UsuarioModel usuario)
         {
             // Inicializamos los valores del usuario actual
-            NombreCompleto ="Usuario Connectado: "+  usuario.Nombre + " " + usuario.Apellidos;
+            NombreCompleto ="Usuario Conectado: "+  usuario.Nombre + " " + usuario.Apellidos;
             Foto = usuario.Foto;
             _usuariosService = new UsuarioService();
             Usuarios = new ObservableCollection<UsuarioModel>();
@@ -177,14 +194,19 @@ namespace G4_EmployeeRegister.ViewModels
             EditUser = new RelayCommand(_ => EditUsuario(), _ => true);
 
             DeleteUser = new RelayCommand(_ => DeleteUsuario(),_ => true);
-            MostrarFichajes = new RelayCommand(paramUsuario => VerLosFichajes(paramUsuario), _ => true);
-            SeleccionarImagenCommand = new RelayCommand(_ => CargaImagen(), _ => true);
-            VolverALogin = new RelayCommand(_=> VolverLoginVentana(),_=> true);
-            DownloadCommand = new RelayCommand(_ => DownloadReport(UsuarioSelecionado), _ => true);
             
+            MostrarFichajes = new RelayCommand(paramUsuario => VerLosFichajes(paramUsuario), _ => true);
+            
+            SeleccionarImagenCommand = new RelayCommand(_ => CargaImagen(), _ => true);
+            
+            VolverALogin = new RelayCommand(_=> VolverLoginVentana(),_=> true);
+            
+            DownloadCommand = new RelayCommand(_ => DownloadReport(UsuarioSelecionado), _ => true);
+
             // Cargamos los usuarios
 
             LoadUsers();
+            CollectionViewSource.GetDefaultView(Usuarios).Filter = FiltroUsuarios;
         }
 
         public bool PuedeAniadir()
@@ -207,8 +229,6 @@ namespace G4_EmployeeRegister.ViewModels
             loginView.Show();
             Application.Current.Windows[0].Close();
         }
-
-
         #endregion
 
         #region DESCARGAR DATOS
@@ -225,7 +245,8 @@ namespace G4_EmployeeRegister.ViewModels
             }
         }
         #endregion
-        #region Cargar Imagen
+
+        #region CARGAR IMAGEN
         // Cargar la imagen seleccionada por el usuario
         public void CargaImagen()
         {
@@ -259,7 +280,23 @@ namespace G4_EmployeeRegister.ViewModels
         }
         #endregion
 
-        #region Ver los Fichajes
+        #region MÉTODO BUSCADOR
+        // Método BUSCADOR
+        private bool FiltroUsuarios(object obj)
+        {
+            if (string.IsNullOrEmpty(Buscador))
+                return true;
+
+            if (obj is UsuarioModel usuario)
+            {
+                return usuario.Username.IndexOf(Buscador, StringComparison.OrdinalIgnoreCase) >= 0;
+            }
+
+            return false;
+        }
+        #endregion
+
+        #region VER FICHAJES
         public void VerLosFichajes(object paramUser)
         {
             UsuarioModel usuario = (UsuarioModel)paramUser;
@@ -380,9 +417,6 @@ namespace G4_EmployeeRegister.ViewModels
             }
         }
         
-
-
-
         private Visibility _listadoVisual = Visibility.Visible;
         public Visibility ListadoVisual
         {
@@ -410,7 +444,6 @@ namespace G4_EmployeeRegister.ViewModels
 
         #region EVENTO DE NOTIFICACIÓN
         // Evento de PropertyChanged
-        public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));

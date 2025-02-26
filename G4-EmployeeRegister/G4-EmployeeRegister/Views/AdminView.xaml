@@ -19,6 +19,7 @@
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+
         <Frame Content="{Binding PaginaFichaje}" Grid.ColumnSpan="2" 
                Visibility="{Binding PaginaFichajeVisibilty}" NavigationUIVisibility="Hidden"/>
 
@@ -37,6 +38,7 @@
                     <ColumnDefinition Width="6*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
+                
                 <!-- USUARIO CONECTADO -->
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="{Binding NombreCompleto}" Style="{StaticResource EstiloTextoTitulo}"/>
@@ -61,22 +63,24 @@
                 <Button Background="Transparent" BorderThickness="0">
                     <Image Source="/Resources/Iconos/buscar-usuario.png" Width="35" Style="{StaticResource EstiloImagen}"/>
                 </Button>
-                <TextBox x:Name="BuscarPorNombreID" Opacity="0.8" Margin="10,0,10,0"
-                         Style="{StaticResource EstilosTextBox}" Grid.Column="1"/>
+                <TextBox x:Name="BuscarPorUsername" 
+                        Text="{Binding Buscador}" 
+                        Opacity="0.8" Margin="10,0,10,0"
+                        Style="{StaticResource EstilosTextBox}" Grid.Column="1"/>
             </Grid>
 
-           <!-- Botones de Acciones -->
-<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="2" Margin="0,15,0,15">
-    <Button Content="Añadir" Width="150" Height="35" Style="{StaticResource EstilosButton}"
-            Command="{Binding AddUser}" Margin="5"/>
-    <Button Content="Editar" Width="150" Height="35" Style="{StaticResource EstilosButton}"
-            Command="{Binding EditUser}"
-            Margin="5"/>
-    <Button Content="Eliminar" Width="150" Height="35" Style="{StaticResource EstilosButton}"
-            Command="{Binding DeleteUser}" Margin="5"/>
-    <Button Content="Descargar Datos" Width="150" Height="35" Style="{StaticResource EstilosButton}"
-            Command="{Binding DownloadCommand}" Margin="5"/>
-</StackPanel>
+            <!-- Botones de Acciones -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="2" Margin="0,15,0,15">
+                <Button Content="Añadir" Width="150" Height="35" Style="{StaticResource EstilosButton}"
+                        Command="{Binding AddUser}" Margin="5"/>
+                <Button Content="Editar" Width="150" Height="35" Style="{StaticResource EstilosButton}"
+                        Command="{Binding EditUser}"
+                        Margin="5"/>
+                <Button Content="Eliminar" Width="150" Height="35" Style="{StaticResource EstilosButton}"
+                        Command="{Binding DeleteUser}" Margin="5"/>
+                <Button Content="Descargar Datos" Width="150" Height="35" Style="{StaticResource EstilosButton}"
+                        Command="{Binding DownloadCommand}" Margin="5"/>
+            </StackPanel>
 
             <!-- Lista Usuarios -->
             <DataGrid x:Name="HistorialUsuario" Grid.Row="3"
@@ -88,11 +92,11 @@
                       VerticalAlignment="Stretch"
                       ColumnWidth="*"
                       IsReadOnly="True"
-                     
                       ItemsSource="{Binding Usuarios}"
                       SelectedItem="{Binding UsuarioSelecionado}"
                       CanUserAddRows="False"
                       CanUserDeleteRows="False">
+                
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Header="Imagen" Width="75">
                         <DataGridTemplateColumn.CellTemplate>
@@ -171,16 +175,16 @@
                     <TextBlock Text="Rol" Grid.Row="6" Grid.Column="0" VerticalAlignment="Center"
                        Style="{StaticResource EstilosSubtitulos}"/>
                     <ComboBox Name="RolSelecionado" Grid.Row="6" Grid.Column="1" SelectedItem="{Binding Rol}"
-                      Margin="5">
+                              Margin="5">
                         <ComboBoxItem Content="Usuario"/>
                         <ComboBoxItem Content="Administrador"/>
                     </ComboBox>
 
                     <TextBlock Text="Foto" Grid.Row="7" Grid.Column="0" VerticalAlignment="Center"
-                       Style="{StaticResource EstilosSubtitulos}"/>
+                               Style="{StaticResource EstilosSubtitulos}"/>
                     <Button Content="Seleccionar Imagen" Grid.Row="7" Grid.Column="1"
-                    VerticalAlignment="Center" Height="30" Style="{StaticResource EstilosButton}"
-                    Command="{Binding SeleccionarImagenCommand}"/>
+                            VerticalAlignment="Center" Height="30" Style="{StaticResource EstilosButton}"
+                            Command="{Binding SeleccionarImagenCommand}"/>
 
                 </Grid>
             </ScrollViewer>

@@ -117,9 +117,6 @@ namespace G4_EmployeeRegister.ViewModels
 
         #endregion
 
-
-
-
         #region EVENTO DE NOTIFICACIÓN
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propName)
