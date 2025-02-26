@@ -50,7 +50,7 @@
 
         <!-- Usuario Conectado -->
 
-        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
+        <StackPanel Grid.Column="1" Grid.Row="1">
             <TextBlock Text="{Binding NombreCompleto}"
             Grid.Column="1" 
             Grid.Row="1"
