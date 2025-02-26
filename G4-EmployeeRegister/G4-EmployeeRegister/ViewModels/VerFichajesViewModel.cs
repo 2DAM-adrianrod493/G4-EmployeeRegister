@@ -10,9 +10,12 @@ namespace G4_EmployeeRegister.ViewModels
 {
     public class VerFichajesViewModel : INotifyPropertyChanged
     {
+        #region Campos Privados
         private readonly FichajeService _fichajeService;
         private UsuarioModel _usuario;
+        #endregion
 
+        #region Propiedades
         // Propiedad que contiene los fichajes de un usuario
         private ObservableCollection<FichajeModel> _fichajes;
         public ObservableCollection<FichajeModel> Fichajes
@@ -24,9 +27,10 @@ namespace G4_EmployeeRegister.ViewModels
                 OnPropertyChanged(nameof(Fichajes));
             }
         }
-        public string NombreCompleto { get => _usuario.Nombre + " " + _usuario.Apellidos; }
-        public string texto;
 
+        public string NombreCompleto { get => _usuario.Nombre + " " + _usuario.Apellidos; }
+
+        private string texto;
         public string Texto
         {
             get => texto;
@@ -36,7 +40,9 @@ namespace G4_EmployeeRegister.ViewModels
                 OnPropertyChanged(nameof(Texto));
             }
         }
+        #endregion
 
+        #region Constructor
         public VerFichajesViewModel(UsuarioModel usuario)
         {
             Texto = "Historial de fichaje";
@@ -47,25 +53,25 @@ namespace G4_EmployeeRegister.ViewModels
             Fichajes = new ObservableCollection<FichajeModel>();
             loadFichajes();
             VolverAtrasCommand = new RelayCommand(_ => VolverAtras(), _ => true);
-
         }
+        #endregion
 
+        #region Métodos Privados
         private void loadFichajes()
         {
-
             Fichajes = new ObservableCollection<FichajeModel>(_fichajeService.GetAllFichajes(_usuario));
         }
-        #region CommandoVolverAtras
-
-        public RelayCommand VolverAtrasCommand { get; }
         #endregion
+
+        #region Comandos y Navegación
+        public RelayCommand VolverAtrasCommand { get; }
         public void VolverAtras()
         {
             AdminView adminView = new AdminView(_usuario);
             adminView.Show();
             Application.Current.Windows[0].Close();
-
         }
+        #endregion
 
         #region Página de Edición
         private Page _paginaFichaje;
@@ -80,8 +86,7 @@ namespace G4_EmployeeRegister.ViewModels
         }
         #endregion
 
-
-        #region EVENTO DE NOTIFICACIÓN
+        #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propName)
         {

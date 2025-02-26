@@ -12,16 +12,18 @@ namespace G4_EmployeeRegister.ViewModels
 {
     public class UserViewModel : INotifyPropertyChanged
     {
+        #region PROPIEDADES Y ATRIBUTOS DE USUARIOS/FICHAJE
         private readonly FichajeService _fichajeService;
         private UsuarioModel _usuario;
 
         public ObservableCollection<FichajeModel> Fichajes { get; set; }
 
+        public string NombreCompleto { get => _usuario.Nombre + " " + _usuario.Apellidos; }
         public RelayCommand IniciarJornadaCommand { get; set; }
         public RelayCommand FinalizarJornadaCommand { get; set; }
         public RelayCommand VolverALogin { get; }
         public RelayCommand DownloadCommandHistorial { get; }
-
+        #endregion
 
         #region CONSTRUCTOR
         public UserViewModel(UsuarioModel usuario)
@@ -38,8 +40,6 @@ namespace G4_EmployeeRegister.ViewModels
 
         }
         #endregion
-
-        public string NombreCompleto { get => _usuario.Nombre + " " + _usuario.Apellidos; }
 
         #region MÉTODOS
         private void IniciarJornada()
@@ -109,21 +109,16 @@ namespace G4_EmployeeRegister.ViewModels
                 MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-
-        #region DESCARGAR DATOS
+        
         // DESCARGAR DATOS
         public void DownloadReportFichajesHistorial()
         {
 
             _fichajeService.DownloadReportFichajesHistorial(_usuario);
-            //if (UsuarioSelecionado != null) {
-            //    _usuariosService.DownloadReportUsuarios();
-            //} else
-            //{
-            //    _usuariosService.DownloadReportUsuario();
-            //}
+            
         }
-        #endregion
+        
+
 
         public void VolverLoginVentana()
         {

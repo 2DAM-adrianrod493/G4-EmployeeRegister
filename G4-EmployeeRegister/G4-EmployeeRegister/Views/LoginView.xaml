@@ -22,7 +22,7 @@
         </Grid.RowDefinitions>
 
         <!-- UserControl -->
-        <uc:UsersControlador Header="Login" HorizontalAlignment="Left" Width="780"/>
+        <uc:UsersControlador Header="Login" HorizontalAlignment="Center" Width="auto"/>
 
         <!-- Formulario -->
         <Border Grid.Row="1" 

@@ -11,19 +11,19 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
 namespace G4_EmployeeRegister.ViewModels
 {
     class AdminViewModel : INotifyPropertyChanged
     {
+        #region PROPIEDADES DE USUARIOS
         // Servicios
         private readonly Services.UsuarioService _usuariosService;
 
         // ObservableCollection de usuarios
         public ObservableCollection<UsuarioModel> Usuarios { get; set; }
-
-        #region PROPIEDADES DE USUARIOS
         private string _nombreCompleto;
         private string _nombre;
         private string _apellidos;
@@ -32,6 +32,8 @@ namespace G4_EmployeeRegister.ViewModels
         private BitmapImage _foto;
         private string _rol;
         private string? _departamento;
+        private string _contrasenia;
+        private string _contraseniaAntigua;
         byte[] usuarioImg;
         private bool imagenSubida = false;
        public string NombreCompleto
@@ -53,8 +55,26 @@ namespace G4_EmployeeRegister.ViewModels
             OnPropertyChanged(nameof(Nombre));
         }
     }
+        public string ContraseniaAntigua
+        {
+            get => _contraseniaAntigua;
+            set
+            {
+                _contraseniaAntigua = value;
+                OnPropertyChanged(nameof(ContraseniaAntigua));
+            }
+        }
+        public string Contrasenia
+        {
+            get => _contrasenia;
+            set
+            {
+                _contrasenia = value;
+                OnPropertyChanged(nameof(Contrasenia));
+            }
+        }
 
-    public string Apellidos
+        public string Apellidos
     {
         get => _apellidos;
         set
@@ -160,13 +180,13 @@ namespace G4_EmployeeRegister.ViewModels
         {
             Usuarios = _usuariosService.GetAllUsuarios();
         }
+        #endregion
 
-        
-
+        #region constructor
         public AdminViewModel(UsuarioModel usuario)
         {
             // Inicializamos los valores del usuario actual
-            NombreCompleto ="Usuario Connectado: "+  usuario.Nombre + " " + usuario.Apellidos;
+            NombreCompleto ="Usuario Conectado: "+  usuario.Nombre + " " + usuario.Apellidos;
             Foto = usuario.Foto;
             _usuariosService = new UsuarioService();
             Usuarios = new ObservableCollection<UsuarioModel>();
@@ -186,7 +206,9 @@ namespace G4_EmployeeRegister.ViewModels
 
             LoadUsers();
         }
+        #endregion
 
+        #region Metodo de comprobacion (Can execute)
         public bool PuedeAniadir()
         {
             if (string.IsNullOrEmpty(NombreCompleto) 
@@ -194,6 +216,7 @@ namespace G4_EmployeeRegister.ViewModels
                 || string.IsNullOrEmpty(Email) 
                 || string.IsNullOrEmpty(Departamento)
                 || string.IsNullOrEmpty(Rol)
+                || string.IsNullOrEmpty(Contrasenia)
                 || Foto==null){
                 return false;
 
@@ -201,6 +224,9 @@ namespace G4_EmployeeRegister.ViewModels
 
             return true;
         }
+        #endregion
+
+        #region Volver Al login
         public void VolverLoginVentana()
         {
             LoginView loginView = new LoginView();
@@ -215,16 +241,17 @@ namespace G4_EmployeeRegister.ViewModels
         // DESCARGAR DATOS
         public void DownloadReport(UsuarioModel usuarioSelecionado)
         {
-            if (UsuarioSelecionado == null)
+            if (UsuarioSelecionado == null) //Si no hay usuario selecionado se descarga datos de todos los usuarios
             {
                 _usuariosService.DownloadReportUsuarios();
             }
-            else
+            else //En caso hay usuario selecionado
             {
                 _usuariosService.DownloadReportUsuarioUnico(usuarioSelecionado);
             }
         }
         #endregion
+
         #region Cargar Imagen
         // Cargar la imagen seleccionada por el usuario
         public void CargaImagen()
@@ -301,6 +328,26 @@ namespace G4_EmployeeRegister.ViewModels
                 return;
             }
 
+            // Si el usuario intenta cambiar la contraseña, validamos la contraseña antigua
+            if (!string.IsNullOrEmpty(Contrasenia))
+            {
+                if (string.IsNullOrEmpty(_contraseniaAntigua))
+                {
+                    MessageBox.Show("Debe ingresar la contraseña antigua para cambiar la contraseña.", "Advertencia", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                // Verificar si la contraseña antigua es correcta
+                if (!_usuariosService.VerificarContrasenia(UsuarioSelecionado.Username, _contraseniaAntigua))
+                {
+                    MessageBox.Show("La contraseña antigua es incorrecta.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                // Si es correcta, actualizamos la contraseña
+                UsuarioSelecionado.Contrasenia = Contrasenia;
+            }
+
             // Actualizamos los datos del usuario con los nuevos valores
             UsuarioSelecionado.Nombre = Nombre;
             UsuarioSelecionado.Apellidos = Apellidos;
@@ -344,7 +391,7 @@ namespace G4_EmployeeRegister.ViewModels
         public void AddUsuario()
         {
             int id = Usuarios.Count() + 1;
-            String Contrasenia = "$2b$12$9Z6CSQpaRPTSKqUQaGj09.ZL7m8GtWjrGfd3M9bcshsh6yurse7NC";
+            //String Contrasenia = "$2b$12$9Z6CSQpaRPTSKqUQaGj09.ZL7m8GtWjrGfd3M9bcshsh6yurse7NC";
 
             if (Usuarios.Any(user => user.Username.Equals(Username)))
             {
@@ -367,7 +414,7 @@ namespace G4_EmployeeRegister.ViewModels
             }
         }
         #endregion
-
+     
         #region CONTROL DE VISIBILIDAD
         private Visibility _paginaFichajeVisibilty = Visibility.Hidden;
         public Visibility PaginaFichajeVisibilty

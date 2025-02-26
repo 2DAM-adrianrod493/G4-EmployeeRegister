@@ -12,10 +12,13 @@
   <ItemGroup>
     <None Remove="Resources\Fondos\fondo.jpg" />
     <None Remove="Resources\Iconos\agregar-usuario.png" />
+    <None Remove="Resources\Iconos\atras.png" />
     <None Remove="Resources\Iconos\añadir-usuario.png" />
     <None Remove="Resources\Iconos\borrar-usuario.png" />
     <None Remove="Resources\Iconos\buscar-usuario.png" />
+    <None Remove="Resources\Iconos\cancelar - Copy.png" />
     <None Remove="Resources\Iconos\cancelar.png" />
+    <None Remove="Resources\Iconos\confirmar - Copy.png" />
     <None Remove="Resources\Iconos\confirmar.png" />
     <None Remove="Resources\Iconos\editar-usuario.png" />
     <None Remove="Resources\Iconos\eliminar-usuario.png" />
@@ -41,28 +44,16 @@
     <Resource Include="Resources\Iconos\agregar-usuario.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\Iconos\atras.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\Iconos\borrar-usuario.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Iconos\buscar-usuario.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\Iconos\cancelar.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Iconos\confirmar.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
     <Resource Include="Resources\Iconos\editar-usuario.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Iconos\entrar.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Iconos\guardar.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Iconos\historial.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Iconos\logo.ico">
