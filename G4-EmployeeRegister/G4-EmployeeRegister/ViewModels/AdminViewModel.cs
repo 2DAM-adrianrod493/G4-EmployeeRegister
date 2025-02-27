@@ -37,24 +37,24 @@ namespace G4_EmployeeRegister.ViewModels
         byte[] usuarioImg;
         private bool imagenSubida = false;
        public string NombreCompleto
-    {
-        get => _nombreCompleto;
-        set
         {
-            _nombreCompleto = value;
-            OnPropertyChanged(nameof(NombreCompleto));
+            get => _nombreCompleto;
+            set
+            {
+                _nombreCompleto = value;
+                OnPropertyChanged(nameof(NombreCompleto));
+            }
         }
-    }
 
-    public string Nombre
-    {
-        get => _nombre;
-        set
+        public string Nombre
         {
-            _nombre = value;
-            OnPropertyChanged(nameof(Nombre));
+            get => _nombre;
+            set
+            {
+                _nombre = value;
+                OnPropertyChanged(nameof(Nombre));
+            }
         }
-    }
         public string ContraseniaAntigua
         {
             get => _contraseniaAntigua;
@@ -75,64 +75,64 @@ namespace G4_EmployeeRegister.ViewModels
         }
 
         public string Apellidos
-    {
-        get => _apellidos;
-        set
         {
-            _apellidos = value;
-            OnPropertyChanged(nameof(Apellidos));
+            get => _apellidos;
+            set
+            {
+                _apellidos = value;
+                OnPropertyChanged(nameof(Apellidos));
+            }
         }
-    }
 
-    public string Email
-    {
-        get => _email;
-        set
+        public string Email
         {
-            _email = value;
-            OnPropertyChanged(nameof(Email));
+            get => _email;
+            set
+            {
+                _email = value;
+                OnPropertyChanged(nameof(Email));
+            }
         }
-    }
 
-    public string Username
-    {
-        get => _username;
-        set
+        public string Username
         {
-            _username = value;
-            OnPropertyChanged(nameof(Username));
+            get => _username;
+            set
+            {
+                _username = value;
+                OnPropertyChanged(nameof(Username));
+            }
         }
-    }
 
-    public BitmapImage Foto
-    {
-        get => _foto;
-        set
+        public BitmapImage Foto
         {
-            _foto = value;
-            OnPropertyChanged(nameof(Foto));
+            get => _foto;
+            set
+            {
+                _foto = value;
+                OnPropertyChanged(nameof(Foto));
+            }
         }
-    }
 
-    public string Rol
-    {
-        get => _rol;
-        set
+        public string Rol
         {
-            _rol = value;
-            OnPropertyChanged(nameof(Rol));
+            get => _rol;
+            set
+            {
+                _rol = value;
+                OnPropertyChanged(nameof(Rol));
+            }
         }
-    }
 
-    public string? Departamento
-    {
-        get => _departamento;
-        set
+        public string? Departamento
         {
-            _departamento = value;
-            OnPropertyChanged(nameof(Departamento));
+            get => _departamento;
+            set
+            {
+                _departamento = value;
+                OnPropertyChanged(nameof(Departamento));
+            }
         }
-    }
         #endregion
 
         #region Propiedad Usuario seleccionado
@@ -161,6 +161,23 @@ namespace G4_EmployeeRegister.ViewModels
                 
             }
         }
+
+        #endregion
+
+        #region Propiedad Buscador
+        // Colección para guardar los usuarios
+        private List<UsuarioModel> _allUsuarios = new List<UsuarioModel>();
+
+        private string _buscador;
+        public string Buscador
+        {
+            get => _buscador;
+            set
+            {
+                _buscador = value;
+                OnPropertyChanged(nameof(Buscador));
+            }
+        }
         #endregion
 
         #region COMANDOS
@@ -172,17 +189,24 @@ namespace G4_EmployeeRegister.ViewModels
         public RelayCommand SeleccionarImagenCommand { get; }
         public RelayCommand VolverALogin { get; }
         public RelayCommand DownloadCommand { get; }
+        public RelayCommand BuscarUsuarioCommand { get; }
         #endregion
 
         #region Cargar Usuarios
         // CARGAMOS USUARIOS
         private void LoadUsers()
         {
-            Usuarios = _usuariosService.GetAllUsuarios();
+            var usuariosObtenidos = _usuariosService.GetAllUsuarios();
+
+            // Guardamos los usuarios en la lista auxiliar (para el buscador)
+            _allUsuarios = usuariosObtenidos.ToList();
+
+            // Creamos un ObservableCollection para mostrar en la vista
+            Usuarios = new ObservableCollection<UsuarioModel>(_allUsuarios);
         }
         #endregion
 
-        #region constructor
+        #region Constructor
         public AdminViewModel(UsuarioModel usuario)
         {
             // Inicializamos los valores del usuario actual
@@ -201,10 +225,35 @@ namespace G4_EmployeeRegister.ViewModels
             SeleccionarImagenCommand = new RelayCommand(_ => CargaImagen(), _ => true);
             VolverALogin = new RelayCommand(_=> VolverLoginVentana(),_=> true);
             DownloadCommand = new RelayCommand(_ => DownloadReport(UsuarioSelecionado), _ => true);
-            
+            BuscarUsuarioCommand = new RelayCommand(_ => BuscarUsuario(), _ => true);
             // Cargamos los usuarios
 
             LoadUsers();
+        }
+        #endregion
+
+        #region Método Buscador
+        public void BuscarUsuario()
+        {
+            // Si no hay texto en el buscador, mostramos todos los usuarios
+            if (string.IsNullOrWhiteSpace(Buscador))
+            {
+                Usuarios.Clear();
+                foreach (var usuario in _allUsuarios)
+                {
+                    Usuarios.Add(usuario);
+                }
+            }
+            else
+            {
+                // Filtramos por username sin distinguir mayúsculas
+                var filtrados = _allUsuarios.Where(u => u.Username.Equals(Buscador, StringComparison.OrdinalIgnoreCase));
+                Usuarios.Clear();
+                foreach (var usuario in filtrados)
+                {
+                    Usuarios.Add(usuario);
+                }
+            }
         }
         #endregion
 
@@ -313,6 +362,7 @@ namespace G4_EmployeeRegister.ViewModels
             if (confirmacion == MessageBoxResult.OK)
             {
                 _usuariosService.RemoveUsuario(UsuarioSelecionado);
+                _allUsuarios.Remove(UsuarioSelecionado);
                 Usuarios.Remove(UsuarioSelecionado);
             }
         }
@@ -410,6 +460,10 @@ namespace G4_EmployeeRegister.ViewModels
 
                 UsuarioModel usuario = new UsuarioModel(id, Nombre, Apellidos, Email, Username, Contrasenia, Foto, Rol, Departamento?.ToUpper());
                 _usuariosService.AddUsuario(usuario);
+
+                // Para el buscador
+                _allUsuarios.Add(usuario);
+
                 Usuarios.Add(usuario);
             }
         }

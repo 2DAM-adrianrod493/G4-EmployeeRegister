@@ -57,13 +57,15 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="5*"/>
                 </Grid.ColumnDefinitions>
-                <Button Background="Transparent" BorderThickness="0">
+                <Button Background="Transparent" BorderThickness="0" Command="{Binding BuscarUsuarioCommand}">
                     <Image Source="/Resources/Iconos/buscar-usuario.png" Width="35" Style="{StaticResource EstiloImagen}"/>
                 </Button>
+
                 <TextBox x:Name="BuscarPorUsername" 
-            Text="{Binding Buscador}" 
-            Opacity="0.8" Margin="10,0,10,0"
-            Style="{StaticResource EstilosTextBox}" Grid.Column="1"/>
+                        Text="{Binding Buscador}" 
+                        Opacity="0.8" Margin="10,0,10,0"
+                        Style="{StaticResource EstilosTextBox}" Grid.Column="1"/>
+
             </Grid>
 
             <!-- Botones de Acciones -->
